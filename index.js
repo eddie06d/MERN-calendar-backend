@@ -1,9 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
-const authRoutes = require('./routes/auth');
-const eventsRoutes = require('./routes/events');
-const { dbConnection } = require('./database/config');
+const authRoutes = require('./src/routes/auth');
+const eventsRoutes = require('./src/routes/events');
+const { dbConnection } = require('./src/database/config');
 
 const PORT = process.env.PORT || 4000;
 
@@ -23,6 +24,10 @@ app.use(cors());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventsRoutes);
+
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 // Server
 app.listen(PORT, () => {
